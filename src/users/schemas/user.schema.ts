@@ -1,7 +1,6 @@
 import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
-import { Ticket } from 'src/ticket/ticket.schema';
 
 export type UserDocument = User & Document;
 
@@ -27,13 +26,10 @@ export class User {
   })
   email: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Ticket' })
-  ticket: Ticket;
-
   @Prop()
   // Many to many is more appropriate
   // boolean is used for easy prototyping
-  admin: boolean;
+  role: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

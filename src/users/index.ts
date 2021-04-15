@@ -8,5 +8,5 @@ export class CreateUserDTO {
   lastname: string;
   email: string;
   password: string;
-  admin: boolean;
+  role: string;
 }
