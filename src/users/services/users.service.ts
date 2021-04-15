@@ -33,7 +33,7 @@ export class UsersService {
     return this.userModel.create(user);
   }
 
-  async getUserByEmail(username: string): Promise<User | undefined> {
+  async getUserByEmail(username: string): Promise<UserDocument> {
     return this.userModel.findOne({ email: username });
   }
 }
