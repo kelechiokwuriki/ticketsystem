@@ -19,14 +19,13 @@ export class User {
 
   @Prop({
     required: true,
-    unique: true,
   })
-  username: string;
+  password: string;
 
   @Prop({
     required: true,
   })
-  password: string;
+  email: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Ticket' })
   ticket: Ticket;

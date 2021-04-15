@@ -7,3 +7,5 @@ export const jwtConstants = {
 export const SCHEMAS = {
   USER: 'User',
 };
+
+export const saltOrRounds = 10;
