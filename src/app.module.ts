@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/modules/auth.module';
-import { UsersModule } from './users/modules/users.module';
+import { UsersModule } from './user/modules/user.module';
 import * as mongoosePaginate from 'mongoose-paginate-v2';
 import * as mongoosePopulate from 'mongoose-autopopulate';
 import { ConfigModule } from '@nestjs/config';

@@ -1,4 +1,3 @@
-import { User } from "src/users/schemas/user.schema";
 
 export const jwtConstants = {
   secret: 'secretKey',
@@ -6,6 +5,7 @@ export const jwtConstants = {
 
 export const SCHEMAS = {
   USER: 'User',
+  TICKET: 'Ticket',
 };
 
 export const saltOrRounds = 10;

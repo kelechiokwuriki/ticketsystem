@@ -28,7 +28,7 @@ export class User {
 
   @Prop()
   // Many to many is more appropriate
-  // boolean is used for easy prototyping
+  // string is used for easy prototyping
   role: string;
 }
 

@@ -11,20 +11,6 @@ export type User = userDTO;
 
 @Injectable()
 export class UsersService {
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'okwuriki',
-      email: 'kelechiokwuriki@gmail.com',
-      password: 'changeme',
-    },
-    {
-      userId: 2,
-      username: 'matthew',
-      email: 'kelechiokwuriki@bento.africa',
-      password: 'guess',
-    },
-  ];
   constructor(
     @InjectModel(SCHEMAS.USER) private userModel: Model<UserDocument>,
   ) {}
