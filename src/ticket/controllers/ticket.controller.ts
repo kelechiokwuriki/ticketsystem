@@ -25,9 +25,6 @@ export class TicketController {
     @Body() createTicketDTO: CreateTicketDTO,
   ): Promise<any> {
     try {
-      // you can check if user is valid in system at this point using userId
-      //   const userId = req.user;
-
       const ticket = await this.ticketService.createTicket(createTicketDTO);
       return response.status(HttpStatus.OK).json(ticket);
     } catch (error) {

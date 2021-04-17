@@ -21,7 +21,7 @@ export class TicketService {
     return this.ticketModel.findOne(criteria);
   }
 
-  public async getUserTickets(userId: string): Promise<any> {
+  public async getUserTickets(userId: string): Promise<TickcetDocument[]> {
     return this.ticketModel.find({ owners: userId });
   }
 }
