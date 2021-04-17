@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpStatus,
+  Param,
   Post,
   Req,
   Res,
@@ -43,6 +44,18 @@ export class TicketController {
     try {
       const tickets = await this.ticketService.getUserTickets(user);
       return response.status(HttpStatus.OK).json(tickets);
+    } catch (error) {
+      return response.status(HttpStatus.NOT_FOUND).send();
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  async getTicket(@Param() params, @Res() response: Response): Promise<any> {
+    try {
+      const { id } = params;
+      const ticket = await this.ticketService.findTicketByCriteria({ _id: id });
+      return response.status(HttpStatus.OK).json(ticket);
     } catch (error) {
       return response.status(HttpStatus.NOT_FOUND).send();
     }
