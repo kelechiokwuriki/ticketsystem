@@ -3,6 +3,6 @@ import { TicketStatus } from './schemas/ticket.schema';
 
 export class CreateTicketDTO {
   text: string;
-  owners: Array<User>;
+  owners: Array<string>;
   status: TicketStatus;
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { SCHEMAS } from 'src/shared/constants';
+import { User } from 'src/user/schemas/user.schema';
 import { TickcetDocument, Ticket } from '../schemas/ticket.schema';
 
 @Injectable()
@@ -11,7 +12,6 @@ export class TicketService {
   ) {}
 
   public async createTicket(payload: Ticket): Promise<TickcetDocument> {
-    console.log(payload);
     return this.ticketModel.create(payload);
   }
 
@@ -19,5 +19,9 @@ export class TicketService {
     criteria: any = {},
   ): Promise<TickcetDocument> {
     return this.ticketModel.findOne(criteria);
+  }
+
+  public async getUserTickets(userId: string): Promise<any> {
+    return this.ticketModel.find({ owners: userId });
   }
 }

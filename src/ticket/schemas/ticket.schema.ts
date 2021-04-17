@@ -15,11 +15,11 @@ export const TicketStates = Object.values(TicketStatus);
 @Schema()
 export class Ticket {
   @Prop({
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Owner' }],
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     required: true,
     description: 'Owners of the the ticket (client, agent, admin)',
   })
-  owners: User[];
+  owners: string[];
 
   @Prop({
     type: String,
