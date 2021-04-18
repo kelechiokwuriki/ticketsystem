@@ -4,9 +4,15 @@ export const jwtConstants = {
 };
 
 export const SCHEMAS = {
-  USER: 'User',
-  TICKET: 'Ticket',
-  TICKETCOMMENT: 'TicketComment',
+  USER: 'user',
+  TICKET: 'ticket',
+  TICKET_COMMENT: 'ticketComment',
 };
+
+export const ROLES = {
+  ADMIN: 'admin',
+  SUPPORT_AGENT: 'supportAgent',
+  CLIENT: 'client',
+}
 
 export const saltOrRounds = 10;

@@ -26,7 +26,7 @@ export class TicketCommentsController {
       );
       return response.status(HttpStatus.OK).json(ticketCommentResponse);
     } catch (error) {
-      return response.status(HttpStatus.BAD_REQUEST).send();
+      return response.status(HttpStatus.BAD_REQUEST).send(error.message);
     }
   }
 }

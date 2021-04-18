@@ -10,7 +10,7 @@ import {
 @Injectable()
 export class TicketCommentService {
   constructor(
-    @InjectModel(SCHEMAS.TICKETCOMMENT)
+    @InjectModel(SCHEMAS.TICKET_COMMENT)
     private ticketCommentModel: Model<TicketCommentDocument>,
   ) {}
 

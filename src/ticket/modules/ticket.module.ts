@@ -12,7 +12,7 @@ import { TicketCommentService } from '../services/ticket-comment.service';
   imports: [
     MongooseModule.forFeature([{ name: SCHEMAS.TICKET, schema: TicketSchema }]),
     MongooseModule.forFeature([
-      { name: SCHEMAS.TICKETCOMMENT, schema: TicketCommentSchema },
+      { name: SCHEMAS.TICKET_COMMENT, schema: TicketCommentSchema },
     ]),
   ],
   controllers: [TicketController, TicketCommentsController],

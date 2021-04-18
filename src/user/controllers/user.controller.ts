@@ -17,7 +17,7 @@ export class UserController {
       return response.status(HttpStatus.OK).json(createdUser);
     } catch (error) {
       console.log('Error', error);
-      return response.status(HttpStatus.BAD_REQUEST).send();
+      return response.status(HttpStatus.BAD_REQUEST).send(error.message);
     }
   }
 }

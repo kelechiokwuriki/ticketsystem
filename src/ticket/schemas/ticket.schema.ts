@@ -52,7 +52,7 @@ export class Ticket {
 const TicketSchema = SchemaFactory.createForClass(Ticket);
 
 TicketSchema.virtual('comments', {
-  ref: SCHEMAS.TICKETCOMMENT,
+  ref: SCHEMAS.TICKET_COMMENT,
   localField: '_id',
   foreignField: 'ticket',
   autopopulate: true,
