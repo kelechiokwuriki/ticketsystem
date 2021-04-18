@@ -14,7 +14,19 @@ export enum TicketStatus {
 }
 
 export const TicketStates = Object.values(TicketStatus);
-@Schema()
+@Schema({
+  timestamps: true,
+  toJSON: {
+    virtuals: true,
+    transform: (_doc: any, ret: any): void => {
+      delete ret._id;
+      delete ret.__v;
+    },
+  },
+  toObject: {
+    virtuals: true,
+  },
+})
 export class Ticket {
   @Prop({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
@@ -35,13 +47,11 @@ export class Ticket {
     required: true,
   })
   text: string;
-
-  ticketComments: TicketCommentDocument[];
 }
 
 const TicketSchema = SchemaFactory.createForClass(Ticket);
 
-TicketSchema.virtual('ticketComments', {
+TicketSchema.virtual('comments', {
   ref: SCHEMAS.TICKETCOMMENT,
   localField: '_id',
   foreignField: 'ticket',

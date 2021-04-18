@@ -23,7 +23,7 @@ export class TicketController {
   @Post('create')
   async createTicket(
     @Res() response: Response,
-    @Body() createTicketDTO: any,
+    @Body() createTicketDTO: CreateTicketDTO,
   ): Promise<any> {
     try {
       const ticket = await this.ticketService.createTicket(createTicketDTO);

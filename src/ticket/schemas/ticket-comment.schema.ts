@@ -5,7 +5,19 @@ import { User } from 'src/user/schemas/user.schema';
 import { Ticket } from './ticket.schema';
 
 export type TicketCommentDocument = TicketComment & Document;
-@Schema()
+@Schema({
+  timestamps: true,
+  toJSON: {
+    virtuals: true,
+    transform: (_doc: any, ret: any): void => {
+      delete ret._id;
+      delete ret.__v;
+    },
+  },
+  toObject: {
+    virtuals: true,
+  },
+})
 export class TicketComment {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
