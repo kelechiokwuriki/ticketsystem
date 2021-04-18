@@ -5,6 +5,7 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  Query,
   Post,
   Req,
   Res,
@@ -35,16 +36,25 @@ export class TicketController {
     }
   }
 
+  /*
+  Fetches all tickets for logged in owner
+  */
   @UseGuards(JwtAuthGuard)
-  @Get('all-customer-tickets')
-  async getUserTickets(
+  @Get('user/:userId')
+  async getTicketsForUser(
     @Req() req: Request,
+    @Param() params,
+    @Query() query,
     @Res() response: Response,
   ): Promise<any> {
-    const user = req.user as string;
+    const { userId } = params;
+
+    const ownerTicketQuery = { owners: userId };
 
     try {
-      const tickets = await this.ticketService.getUserTickets(user);
+      const tickets = await this.ticketService.findAllTicketsByCriteria(
+        ownerTicketQuery,
+      );
       return response.status(HttpStatus.OK).json(tickets);
     } catch (error) {
       return response.status(HttpStatus.NOT_FOUND).send(error.message);
@@ -70,7 +80,7 @@ export class TicketController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/process/:id')
+  @Get('/process/:ticketId')
   async processTicket(
     @Param() params,
     @Req() req: Request,
@@ -82,6 +92,18 @@ export class TicketController {
         throw new HttpException('Unauthorised', HttpStatus.UNAUTHORIZED);
       }
 
+      const { ticketId } = params;
+      const ticket = await this.ticketService.processTicket(ticketId);
+      return response.status(HttpStatus.OK).json(ticket);
+    } catch (error) {
+      return response.status(HttpStatus.BAD_REQUEST).send(error.message);
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/close/:id')
+  async closeTicket(@Param() params, @Res() response: Response): Promise<any> {
+    try {
       const { id } = params;
       const ticket = await this.ticketService.processTicket(id);
       return response.status(HttpStatus.OK).json(ticket);
@@ -92,7 +114,10 @@ export class TicketController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/close/:id')
-  async closeTicket(@Param() params, @Res() response: Response): Promise<any> {
+  async getTicketsForOwner(
+    @Param() params,
+    @Res() response: Response,
+  ): Promise<any> {
     try {
       const { id } = params;
       const ticket = await this.ticketService.processTicket(id);
