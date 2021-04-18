@@ -65,7 +65,7 @@ export class TicketController {
    * Requirement 2: View the status of the previous requests.
    * The returned data contains status which can be used in the Front End
    */
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getTicket(@Param() params, @Res() response: Response): Promise<any> {
     try {
@@ -101,7 +101,7 @@ export class TicketController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/close/:id')
+  @Get('close/:id')
   async closeTicket(@Param() params, @Res() response: Response): Promise<any> {
     try {
       const { id } = params;
@@ -112,16 +112,20 @@ export class TicketController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('/close/:id')
-  async getTicketsForOwner(
-    @Param() params,
-    @Res() response: Response,
-  ): Promise<any> {
+  // @UseGuards(JwtAuthGuard)
+  @Get('/closed/generatepdf')
+  async closeIt(@Res() response: Response): Promise<any> {
     try {
-      const { id } = params;
-      const ticket = await this.ticketService.processTicket(id);
-      return response.status(HttpStatus.OK).json(ticket);
+      const ticket = await this.ticketService.generateClosedTicketsInPdfFormat();
+
+      response.set({
+        'Content-Type': 'application/csv',
+        'Content-Disposition': 'attachment; filename=report.csv',
+        'Content-Length': ticket.length,
+      });
+
+      response.end(ticket);
+      // return response.status(HttpStatus.OK).json(ticket);
     } catch (error) {
       return response.status(HttpStatus.BAD_REQUEST).send(error.message);
     }

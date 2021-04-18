@@ -7,6 +7,7 @@ import { TicketCommentSchema } from '../schemas/ticket-comment.schema';
 import { TicketSchema } from '../schemas/ticket.schema';
 import { TicketService } from '../services/ticket.service';
 import { TicketCommentService } from '../services/ticket-comment.service';
+import { UserSchema } from 'src/user/schemas/user.schema';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { TicketCommentService } from '../services/ticket-comment.service';
     MongooseModule.forFeature([
       { name: SCHEMAS.TICKET_COMMENT, schema: TicketCommentSchema },
     ]),
+    MongooseModule.forFeature([{ name: SCHEMAS.USER, schema: UserSchema }]),
   ],
   controllers: [TicketController, TicketCommentsController],
   providers: [TicketService, TicketCommentService],
