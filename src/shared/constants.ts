@@ -6,6 +6,7 @@ export const jwtConstants = {
 export const SCHEMAS = {
   USER: 'User',
   TICKET: 'Ticket',
+  TICKETCOMMENT: 'TicketComment',
 };
 
 export const saltOrRounds = 10;

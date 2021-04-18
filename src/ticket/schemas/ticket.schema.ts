@@ -2,8 +2,10 @@ import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { User } from 'src/user/schemas/user.schema';
 import * as mongoose from 'mongoose';
+import { TicketCommentDocument } from './ticket-comment.schema';
+import { SCHEMAS } from 'src/shared/constants';
 
-export type TickcetDocument = Ticket & Document;
+export type TicketDocument = Ticket & Document;
 
 export enum TicketStatus {
   Open = 'open',
@@ -33,6 +35,17 @@ export class Ticket {
     required: true,
   })
   text: string;
+
+  ticketComments: TicketCommentDocument[];
 }
 
-export const TicketSchema = SchemaFactory.createForClass(Ticket);
+const TicketSchema = SchemaFactory.createForClass(Ticket);
+
+TicketSchema.virtual('ticketComments', {
+  ref: SCHEMAS.TICKETCOMMENT,
+  localField: '_id',
+  foreignField: 'ticket',
+  autopopulate: true,
+});
+
+export { TicketSchema };

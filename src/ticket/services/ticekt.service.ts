@@ -3,25 +3,25 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { SCHEMAS } from 'src/shared/constants';
 import { User } from 'src/user/schemas/user.schema';
-import { TickcetDocument, Ticket } from '../schemas/ticket.schema';
+import { TicketDocument, Ticket } from '../schemas/ticket.schema';
 
 @Injectable()
 export class TicketService {
   constructor(
-    @InjectModel(SCHEMAS.TICKET) private ticketModel: Model<TickcetDocument>,
+    @InjectModel(SCHEMAS.TICKET) private ticketModel: Model<TicketDocument>,
   ) {}
 
-  public async createTicket(payload: Ticket): Promise<TickcetDocument> {
+  public async createTicket(payload: Ticket): Promise<TicketDocument> {
     return this.ticketModel.create(payload);
   }
 
   public async findTicketByCriteria(
     criteria: any = {},
-  ): Promise<TickcetDocument> {
+  ): Promise<TicketDocument> {
     return this.ticketModel.findOne(criteria);
   }
 
-  public async getUserTickets(userId: string): Promise<TickcetDocument[]> {
+  public async getUserTickets(userId: string): Promise<TicketDocument[]> {
     return this.ticketModel.find({ owners: userId });
   }
 }

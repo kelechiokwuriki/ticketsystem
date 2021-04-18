@@ -23,7 +23,7 @@ export class TicketController {
   @Post('create')
   async createTicket(
     @Res() response: Response,
-    @Body() createTicketDTO: CreateTicketDTO,
+    @Body() createTicketDTO: any,
   ): Promise<any> {
     try {
       const ticket = await this.ticketService.createTicket(createTicketDTO);
@@ -49,6 +49,10 @@ export class TicketController {
     }
   }
 
+  /**
+   * Requirement 2: View the status of the previous requests.
+   * The returned data contains status which can be used in the Front End
+   */
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getTicket(@Param() params, @Res() response: Response): Promise<any> {
