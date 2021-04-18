@@ -11,9 +11,8 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { User } from 'src/user/schemas/user.schema';
 import { CreateTicketDTO } from '..';
-import { TicketService } from '../services/ticekt.service';
+import { TicketService } from '../services/ticket.service';
 
 @Controller('tickets')
 export class TicketController {
@@ -58,10 +57,27 @@ export class TicketController {
   async getTicket(@Param() params, @Res() response: Response): Promise<any> {
     try {
       const { id } = params;
-      const ticket = await this.ticketService.findTicketByCriteria({ _id: id });
+      const ticket = await this.ticketService.findOneTicketByCriteria({
+        _id: id,
+      });
       return response.status(HttpStatus.OK).json(ticket);
     } catch (error) {
       return response.status(HttpStatus.NOT_FOUND).send();
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/process/:id')
+  async processTicket(
+    @Param() params,
+    @Res() response: Response,
+  ): Promise<any> {
+    try {
+      const { id } = params;
+      const ticket = await this.ticketService.processTicket(id);
+      return response.status(HttpStatus.OK).json(ticket);
+    } catch (error) {
+      return response.status(HttpStatus.BAD_REQUEST).send();
     }
   }
 }

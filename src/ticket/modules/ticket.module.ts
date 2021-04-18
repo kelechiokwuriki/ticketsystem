@@ -5,7 +5,7 @@ import { TicketCommentsController } from '../controllers/ticket-comment.controll
 import { TicketController } from '../controllers/ticket.controller';
 import { TicketCommentSchema } from '../schemas/ticket-comment.schema';
 import { TicketSchema } from '../schemas/ticket.schema';
-import { TicketService } from '../services/ticekt.service';
+import { TicketService } from '../services/ticket.service';
 import { TicketCommentService } from '../services/ticket-comment.service';
 
 @Module({

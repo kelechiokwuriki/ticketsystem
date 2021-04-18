@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { SCHEMAS } from 'src/shared/constants';
-import { User } from 'src/user/schemas/user.schema';
-import { TicketDocument, Ticket } from '../schemas/ticket.schema';
+import { TicketDocument, Ticket, TicketStatus } from '../schemas/ticket.schema';
 
 @Injectable()
 export class TicketService {
@@ -15,7 +14,7 @@ export class TicketService {
     return this.ticketModel.create(payload);
   }
 
-  public async findTicketByCriteria(
+  public async findOneTicketByCriteria(
     criteria: any = {},
   ): Promise<TicketDocument> {
     return this.ticketModel.findOne(criteria);
@@ -23,5 +22,17 @@ export class TicketService {
 
   public async getUserTickets(userId: string): Promise<TicketDocument[]> {
     return this.ticketModel.find({ owners: userId });
+  }
+
+  public async processTicket(ticketId: string): Promise<TicketDocument> {
+    const ticket = await this.findOneTicketByCriteria({ _id: ticketId });
+
+    if (ticket.status === TicketStatus.Processing) {
+      throw new Error('Ticket is already being processed');
+    }
+
+    ticket.status = TicketStatus.Processing;
+
+    return ticket.save();
   }
 }
