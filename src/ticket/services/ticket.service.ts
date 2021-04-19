@@ -53,7 +53,7 @@ export class TicketService {
 
     const ticketsForUse = [];
 
-    closedTickets.forEach((ticket) => {
+    closedTickets.forEach((ticket: any) => {
       if (
         moment(moment()).diff(ticket.updatedAt, 'days') ===
         assumedNumberOfDaysInAMonth

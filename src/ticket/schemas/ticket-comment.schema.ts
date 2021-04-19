@@ -3,6 +3,7 @@ import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 import { User } from 'src/user/schemas/user.schema';
 import { Ticket } from './ticket.schema';
+import { SCHEMAS } from 'src/shared/constants';
 
 export type TicketCommentDocument = TicketComment & Document;
 @Schema({
@@ -12,6 +13,7 @@ export type TicketCommentDocument = TicketComment & Document;
     transform: (_doc: any, ret: any): void => {
       delete ret._id;
       delete ret.__v;
+      delete ret.password;
     },
   },
   toObject: {
@@ -38,4 +40,13 @@ export class TicketComment {
   by: User;
 }
 
-export const TicketCommentSchema = SchemaFactory.createForClass(TicketComment);
+const TicketCommentSchema = SchemaFactory.createForClass(TicketComment);
+
+TicketCommentSchema.virtual('commentor', {
+  ref: SCHEMAS.USER,
+  localField: 'by',
+  foreignField: '_id',
+  autopopulate: true,
+});
+
+export { TicketCommentSchema };

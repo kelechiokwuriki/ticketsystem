@@ -4,7 +4,20 @@ import * as mongoose from 'mongoose';
 
 export type UserDocument = User & Document;
 
-@Schema()
+@Schema({
+  timestamps: true,
+  toJSON: {
+    virtuals: true,
+    transform: (_doc: any, ret: any): void => {
+      delete ret._id;
+      delete ret.__v;
+      delete ret.password;
+    },
+  },
+  toObject: {
+    virtuals: true,
+  },
+})
 export class User {
   @Prop({
     required: true,

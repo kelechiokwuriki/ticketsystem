@@ -65,7 +65,7 @@ export class TicketController {
    * Requirement 2: View the status of the previous requests.
    * The returned data contains status which can be used in the Front End
    */
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getTicket(@Param() params, @Res() response: Response): Promise<any> {
     try {
@@ -117,9 +117,6 @@ export class TicketController {
   async closeIt(@Res() response: Response): Promise<any> {
     try {
       const tickets = await this.ticketService.generateClosedTicketsInCSVFormat();
-
-      console.log(tickets);
-
       if (tickets) {
         response.set({
           'Content-Disposition': 'attachment; filename=report.csv',
@@ -128,7 +125,7 @@ export class TicketController {
 
         return response.end(tickets);
       }
-      return response.send('No reports to generate');
+      return response.send();
     } catch (error) {
       return response.status(HttpStatus.BAD_REQUEST).send(error.message);
     }
