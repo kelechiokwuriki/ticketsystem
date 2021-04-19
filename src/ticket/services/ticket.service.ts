@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as moment from 'moment';
 import { Model } from 'mongoose';
-import { assumedNumberOfDaysInAMonth, SCHEMAS } from 'src/shared/constants';
+import { SCHEMAS } from 'src/shared/constants';
 import { TicketDocument, Ticket, TicketStatus } from '../schemas/ticket.schema';
 import { UserDocument } from 'src/user/schemas/user.schema';
 import { Parser } from 'json2csv';
@@ -66,7 +66,7 @@ export class TicketService {
     closedTickets.forEach((ticket: any) => {
       if (
         moment(moment()).diff(ticket.updatedAt, 'days') ===
-        assumedNumberOfDaysInAMonth
+        26
       ) {
         ticketsForUse.push({
           text: ticket.text,
