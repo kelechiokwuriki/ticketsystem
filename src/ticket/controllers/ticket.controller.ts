@@ -31,15 +31,17 @@ export class TicketController {
     @Body() createTicketDTO: CreateTicketDTO,
   ): Promise<any> {
     try {
-      // if front end does not specify the
-      // logged in user in the owners property. Enforce it
+      const reqUser = req.user as string;
+
+      if (!createTicketDTO.hasOwnProperty('owners')) {
+        createTicketDTO.owners = [];
+        createTicketDTO.owners.push(reqUser);
+      }
+
       if (
         'owners' in createTicketDTO &&
-        ![req.user].includes(createTicketDTO.owners)
+        !createTicketDTO.owners.includes(reqUser)
       ) {
-        createTicketDTO.owners.push(req.user as string);
-      } else {
-        createTicketDTO.owners = [];
         createTicketDTO.owners.push(req.user as string);
       }
 

@@ -19,6 +19,9 @@ export class AuthController {
   async login(@Req() req: Request, @Res() response: Response) {
     try {
       const loggedInUser = await this.authService.login(req.user);
+      if (!loggedInUser) {
+        return response.status(HttpStatus.UNAUTHORIZED).send();
+      }
       return response.status(HttpStatus.OK).json(loggedInUser);
     } catch (error) {
       return response.status(HttpStatus.BAD_REQUEST).send();
