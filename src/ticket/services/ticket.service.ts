@@ -4,8 +4,6 @@ import * as moment from 'moment';
 import { Model } from 'mongoose';
 import { assumedNumberOfDaysInAMonth, SCHEMAS } from 'src/shared/constants';
 import { TicketDocument, Ticket, TicketStatus } from '../schemas/ticket.schema';
-import * as PDFDocument from 'pdfkit';
-import fs from 'fs';
 import { UserDocument } from 'src/user/schemas/user.schema';
 import { Parser } from 'json2csv';
 
@@ -48,36 +46,33 @@ export class TicketService {
     return ticket.save();
   }
 
-  public async generateClosedTicketsInPdfFormat(): Promise<any> {
+  public async generateClosedTicketsInCSVFormat(): Promise<any> {
     const closedTickets: any = await this.ticketModel.find({
       status: TicketStatus.Closed,
     });
 
-    const closedTicketsInTwentySevenDays = closedTickets.map(async (ticket) => {
-      const expiresInDays = moment(moment()).diff(ticket.updatedAt, 'days');
+    const ticketsForUse = [];
 
-      if (expiresInDays === 25) {
-        return ticket;
+    closedTickets.forEach((ticket) => {
+      if (
+        moment(moment()).diff(ticket.updatedAt, 'days') ===
+        assumedNumberOfDaysInAMonth
+      ) {
+        ticketsForUse.push({
+          text: ticket.text,
+          status: ticket.status,
+          closedAt: moment(ticket.updatedAt).format(
+            'dddd, MMMM Do YYYY, h:mm:ss a',
+          ),
+        });
       }
     });
 
-    const tickets: any = await Promise.all(closedTicketsInTwentySevenDays);
-
-    const fieldsPromise = tickets.map((ticket) => {
-      return {
-        text: ticket.text,
-        status: ticket.status,
-        closedAt: moment(ticket.updatedAt).format(
-          'dddd, MMMM Do YYYY, h:mm:ss a',
-        ),
-      };
-    });
-
-    const result = await Promise.all(fieldsPromise);
-
-    const json2csvParser = new Parser();
-    const csv = json2csvParser.parse(result);
-    console.log(csv);
-    return csv;
+    if (ticketsForUse.length > 0) {
+      const json2csvParser = new Parser();
+      const csv = json2csvParser.parse(ticketsForUse);
+      return csv;
+    }
+    return null;
   }
 }

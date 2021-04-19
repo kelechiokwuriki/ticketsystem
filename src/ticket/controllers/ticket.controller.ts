@@ -116,16 +116,19 @@ export class TicketController {
   @Get('/closed/generatepdf')
   async closeIt(@Res() response: Response): Promise<any> {
     try {
-      const ticket = await this.ticketService.generateClosedTicketsInPdfFormat();
+      const tickets = await this.ticketService.generateClosedTicketsInCSVFormat();
 
-      response.set({
-        'Content-Type': 'application/csv',
-        'Content-Disposition': 'attachment; filename=report.csv',
-        'Content-Length': ticket.length,
-      });
+      console.log(tickets);
 
-      response.end(ticket);
-      // return response.status(HttpStatus.OK).json(ticket);
+      if (tickets) {
+        response.set({
+          'Content-Disposition': 'attachment; filename=report.csv',
+          'Content-Length': tickets.length,
+        });
+
+        return response.end(tickets);
+      }
+      return response.send('No reports to generate');
     } catch (error) {
       return response.status(HttpStatus.BAD_REQUEST).send(error.message);
     }
