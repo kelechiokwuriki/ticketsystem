@@ -11,6 +11,13 @@ https://documenter.getpostman.com/view/1893514/TzJsheN1
 $ npm install
 ```
 
+## Generating PDF
+
+1. Create a ticket
+2. Edit the date to 27 days from current date
+3. Hit "{baseUri}/tickets/closed/generatepdf" endpoint on your browser
+
+
 ## Running the app
 
 ```bash

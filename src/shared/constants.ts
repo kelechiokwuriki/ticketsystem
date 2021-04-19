@@ -15,6 +15,6 @@ export const ROLES = {
 };
 
 // Febraury is 28 days
-export const assumedNumberOfDaysInAMonth = 25;
+export const assumedNumberOfDaysInAMonth = 27;
 
 export const saltOrRounds = 10;
