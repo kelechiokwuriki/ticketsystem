@@ -10,6 +10,7 @@ import {
   Req,
   Res,
   UseGuards,
+  Put,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -94,6 +95,22 @@ export class TicketController {
 
       const { ticketId } = params;
       const ticket = await this.ticketService.processTicket(ticketId);
+      return response.status(HttpStatus.OK).json(ticket);
+    } catch (error) {
+      return response.status(HttpStatus.BAD_REQUEST).send(error.message);
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put(':id')
+  async updateTicket(
+    @Param() params,
+    @Res() response: Response,
+    @Body() updateTicket,
+  ): Promise<any> {
+    try {
+      const { id } = params;
+      const ticket = await this.ticketService.updateTicket(id, updateTicket);
       return response.status(HttpStatus.OK).json(ticket);
     } catch (error) {
       return response.status(HttpStatus.BAD_REQUEST).send(error.message);

@@ -46,6 +46,16 @@ export class TicketService {
     return ticket.save();
   }
 
+  public async updateTicket(
+    ticketId: string,
+    ticketBody: Ticket,
+  ): Promise<any> {
+    return this.ticketModel.findOneAndUpdate({ _id: ticketId }, ticketBody, {
+      useFindAndModify: false,
+      new: true,
+    });
+  }
+
   public async generateClosedTicketsInCSVFormat(): Promise<any> {
     const closedTickets: any = await this.ticketModel.find({
       status: TicketStatus.Closed,
