@@ -26,10 +26,23 @@ export class TicketController {
   @UseGuards(JwtAuthGuard)
   @Post('create')
   async createTicket(
+    @Req() req: Request,
     @Res() response: Response,
     @Body() createTicketDTO: CreateTicketDTO,
   ): Promise<any> {
     try {
+      // if front end does not specify the
+      // logged in user in the owners property. Enforce it
+      if (
+        'owners' in createTicketDTO &&
+        ![req.user].includes(createTicketDTO.owners)
+      ) {
+        createTicketDTO.owners.push(req.user as string);
+      } else {
+        createTicketDTO.owners = [];
+        createTicketDTO.owners.push(req.user as string);
+      }
+
       const ticket = await this.ticketService.createTicket(createTicketDTO);
       return response.status(HttpStatus.OK).json(ticket);
     } catch (error) {
@@ -38,7 +51,7 @@ export class TicketController {
   }
 
   /*
-  Fetches all tickets for logged in owner
+  Fetches all tickets for user
   */
   @UseGuards(JwtAuthGuard)
   @Get('user/:userId')
@@ -81,27 +94,6 @@ export class TicketController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/process/:ticketId')
-  async processTicket(
-    @Param() params,
-    @Req() req: Request,
-    @Res() response: Response,
-  ): Promise<any> {
-    try {
-      const user = req.user as User;
-      if (user.role !== ROLES.SUPPORT_AGENT) {
-        throw new HttpException('Unauthorised', HttpStatus.UNAUTHORIZED);
-      }
-
-      const { ticketId } = params;
-      const ticket = await this.ticketService.processTicket(ticketId);
-      return response.status(HttpStatus.OK).json(ticket);
-    } catch (error) {
-      return response.status(HttpStatus.BAD_REQUEST).send(error.message);
-    }
-  }
-
-  @UseGuards(JwtAuthGuard)
   @Put(':id')
   async updateTicket(
     @Param() params,
@@ -111,18 +103,6 @@ export class TicketController {
     try {
       const { id } = params;
       const ticket = await this.ticketService.updateTicket(id, updateTicket);
-      return response.status(HttpStatus.OK).json(ticket);
-    } catch (error) {
-      return response.status(HttpStatus.BAD_REQUEST).send(error.message);
-    }
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('close/:id')
-  async closeTicket(@Param() params, @Res() response: Response): Promise<any> {
-    try {
-      const { id } = params;
-      const ticket = await this.ticketService.processTicket(id);
       return response.status(HttpStatus.OK).json(ticket);
     } catch (error) {
       return response.status(HttpStatus.BAD_REQUEST).send(error.message);
