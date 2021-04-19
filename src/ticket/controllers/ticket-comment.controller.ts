@@ -3,10 +3,11 @@ import {
   Controller,
   HttpStatus,
   Post,
+  Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { TicketCommentService } from '../services/ticket-comment.service';
 
@@ -18,9 +19,11 @@ export class TicketCommentsController {
   @Post('create')
   async createTicket(
     @Res() response: Response,
+    @Req() req: Request,
     @Body() ticketComment: any,
   ): Promise<any> {
     try {
+      ticketComment.by = req.user;
       const ticketCommentResponse = await this.ticketCommentService.createTicketComment(
         ticketComment,
       );

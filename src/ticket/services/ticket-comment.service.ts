@@ -23,7 +23,7 @@ export class TicketCommentService {
 
     const userRole = await (await this.userModel.findOne({ _id: by })).role;
 
-    if (userRole !== ROLES.ADMIN || userRole !== ROLES.SUPPORT_AGENT) {
+    if (![ROLES.ADMIN, ROLES.SUPPORT_AGENT].includes(userRole)) {
       if (await this.supportAgentMadeCommentOnTicket(ticket)) {
         return this.ticketCommentModel.create(payload);
       }
